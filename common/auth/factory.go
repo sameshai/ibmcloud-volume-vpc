@@ -27,7 +27,7 @@ import (
 // NewVPCContextCredentialsFactory ...
 func NewVPCContextCredentialsFactory(config *vpcconfig.VPCBlockConfig) (*auth.ContextCredentialsFactory, error) {
 	authConfig := &iam.AuthConfiguration{
-		IamURL:          config.VPCConfig.G2TokenExchangeURL,
+		IamURL:          config.VPCConfig.TokenExchangeURL,
 		IamClientID:     config.IamClientID,
 		IamClientSecret: config.IamClientSecret,
 	}
