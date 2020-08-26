@@ -28,8 +28,8 @@ import (
 func NewVPCContextCredentialsFactory(config *vpcconfig.VPCBlockConfig) (*auth.ContextCredentialsFactory, error) {
 	authConfig := &iam.AuthConfiguration{
 		IamURL:          config.VPCConfig.TokenExchangeURL,
-		IamClientID:     config.IamClientID,
-		IamClientSecret: config.IamClientSecret,
+		IamClientID:     config.VPCConfig.IamClientID,
+		IamClientSecret: config.VPCConfig.IamClientSecret,
 	}
 	ccf, err := auth.NewContextCredentialsFactory(authConfig)
 	if config.VPCConfig.IKSTokenExchangePrivateURL != "" {
