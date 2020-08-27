@@ -50,6 +50,10 @@ func (vpcs *VPCSession) AttachVolume(volumeAttachmentRequest provider.VolumeAtta
 	}
 	var volumeAttachResult *models.VolumeAttachment
 	var varp *provider.VolumeAttachmentResponse
+
+	if !vpcs.Config.VPCConfig.IsIKS {
+		volumeAttachmentRequest.IKSVolumeAttachment = nil
+	}
 	volumeAttachment := models.NewVolumeAttachment(volumeAttachmentRequest)
 
 	err = vpcs.APIRetry.FlexyRetry(vpcs.Logger, func() (error, bool) {
