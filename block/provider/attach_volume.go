@@ -50,7 +50,8 @@ func (vpcs *VPCSession) AttachVolume(volumeAttachmentRequest provider.VolumeAtta
 	}
 	var volumeAttachResult *models.VolumeAttachment
 	var varp *provider.VolumeAttachmentResponse
-
+	// If it is Non IKS environment then remove the IKSVolumeAttachment field from request struct which contains clusterID.
+	// TO-DO : Enhance this check. Put it in right place
 	if !vpcs.Config.VPCConfig.IsIKS {
 		volumeAttachmentRequest.IKSVolumeAttachment = nil
 	}
