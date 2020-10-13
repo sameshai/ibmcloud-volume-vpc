@@ -40,7 +40,6 @@ func NewVolumeAttachmentManager(session provider.Session, logger *zap.Logger, re
 	}
 }
 
-var instanceID string
 var volumeAttachmentReq provider.VolumeAttachmentRequest
 
 //AttachVolume ...
@@ -82,11 +81,11 @@ func (vam *VolumeAttachmentManager) DetachVolume() {
 
 // VolumeAttachment ...
 func (vam *VolumeAttachmentManager) VolumeAttachment() {
-	fmt.Println("You selected to get volume atatchment detail")
+	fmt.Println("You selected to get volume attachment detail")
 	vam.setupVolumeAttachmentRequest()
 	response, err := vam.Session.GetVolumeAttachment(volumeAttachmentReq)
 	if err != nil {
-		updateRequestID(err, vam.RequestID)
+		_ = updateRequestID(err, vam.RequestID)
 		vam.Logger.Error("Failed to get volume attachment", zap.Error(err))
 		return
 	}
@@ -111,7 +110,6 @@ func (vam *VolumeAttachmentManager) setupVolumeAttachmentRequest() {
 			DeleteVolumeOnInstanceDelete: false,
 		},
 		IKSVolumeAttachment: &provider.IKSVolumeAttachment{
-
 			ClusterID: &clusterID,
 		},
 	}
