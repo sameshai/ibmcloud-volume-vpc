@@ -507,9 +507,9 @@ func main() {
 			fmt.Println("You selected choice to expand volume")
 			volume := &provider.ExpandVolumeRequest{}
 			fmt.Printf("Please enter volume ID to exand: ")
-			_, er11 = fmt.Scanf("%s", &volumeID)
+			_, _ = fmt.Scanf("%s", &volumeID)
 			fmt.Printf("Please enter new capacity: ")
-			_, er11 = fmt.Scanf("%d", &capacity)
+			_, _ = fmt.Scanf("%d", &capacity)
 			volume.VolumeID = volumeID
 			volume.Capacity = capacity
 			expandedVolumeSize, er11 := sess.ExpandVolume(*volume)
