@@ -3,16 +3,16 @@
 
 [vpc]
   vpc_enabled = true
-  g2_token_exchange_endpoint_url = "https://iam.stage1.bluemix.net"
-  g2_riaas_endpoint_url = "https://us-south-stage01.iaasdev.cloud.ibm.com/"
-  g2_riaas_endpoint_private_url = "https://us-south-stage01.iaasdev.cloud.ibm.com"
-  g2_resource_group_id = ""
-  g2_api_key = ""
+  g2_token_exchange_endpoint_url = "https://iam.bluemix.net"
+  g2_riaas_endpoint_url = "https://us-south.iaas.cloud.ibm.com"
+  g2_riaas_endpoint_private_url = "https://us-south.iaas.cloud.ibm.com"
+  g2_resource_group_id = "832b3da0130e4a78a2d5a6c62e79a745"
+  g2_api_key = "RH5tcjfMWQRbtYM_7UIAdG_Kuz0eJhixwbJ1PfH9Ixzf"
   provider_type = "g2"
-  vpc_block_provider_name = "vpc"
+  vpc_provider_type = "vpc-file"
   encryption = false
-  iks_token_exchange_endpoint_private_url = "https://containers.test.cloud.ibm.com"
-  containers_api_csrf_token = ""
+  iks_token_exchange_endpoint_private_url = "https://us-south.containers.cloud.ibm.com"
+  containers_api_csrf_token = "58a100b5-46b0-41db-9a61-a415747d7993"
   max_retry_attempt  = 2 # 10 times with exponential re-try with max gap max_retry_gap
   max_retry_gap =  120 # 2 minutes
   api_version = "2020-06-16"   #"2019-07-02"
@@ -20,8 +20,8 @@
   vpc_api_timeout = "120s"
 
 [IKS]
-  iks_enabled = true
+  iks_enabled = false
   iks_block_provider_name = "iks-vpc-classic"
 
 [API]
-  PassthroughSecret = ""
+  PassthroughSecret = "58a100b5-46b0-41db-9a61-a415747d7993"

@@ -37,6 +37,7 @@ type Volume struct {
 	ID                  string               `json:"id,omitempty"`
 	Name                string               `json:"name,omitempty"`
 	Capacity            int64                `json:"capacity,omitempty"`
+	Size                int64                `json:"size,omitempty"`
 	Iops                int64                `json:"iops,omitempty"`
 	VolumeEncryptionKey *VolumeEncryptionKey `json:"encryption_key,omitempty"`
 	ResourceGroup       *ResourceGroup       `json:"resource_group,omitempty"`

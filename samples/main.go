@@ -31,8 +31,8 @@ import (
 	"github.com/IBM/ibmcloud-volume-interface/lib/provider"
 	userError "github.com/IBM/ibmcloud-volume-interface/lib/utils"
 	"github.com/IBM/ibmcloud-volume-interface/provider/local"
-	provider_util "github.com/IBM/ibmcloud-volume-vpc/block/utils"
-	vpcconfig "github.com/IBM/ibmcloud-volume-vpc/block/vpcconfig"
+	provider_file_util "github.com/IBM/ibmcloud-volume-vpc/file/utils"
+	vpcfileconfig "github.com/IBM/ibmcloud-volume-vpc/file/vpcconfig"
 	uid "github.com/satori/go.uuid"
 )
 
@@ -92,14 +92,33 @@ func main() {
 		traceLevel.SetLevel(zap.DebugLevel)
 	}
 
-	vpcBlockConfig := &vpcconfig.VPCBlockConfig{
+	// vpcBlockConfig := &vpcconfig.VPCBlockConfig{
+	// 	VPCConfig:    conf.VPC,
+	// 	IKSConfig:    conf.IKS,
+	// 	APIConfig:    conf.API,
+	// 	ServerConfig: conf.Server,
+	// }
+
+	vpcFileConfig := &vpcfileconfig.VPCFileConfig{
 		VPCConfig:    conf.VPC,
 		IKSConfig:    conf.IKS,
 		APIConfig:    conf.API,
 		ServerConfig: conf.Server,
 	}
+
 	// Prepare provider registry
-	providerRegistry, err := provider_util.InitProviders(vpcBlockConfig, logger)
+	// providerRegistry = nil
+	// if conf.VPC != nil && conf.VPC.Enabled {
+	// 	if conf.VPC.VPCProviderType == "vpc-block" {
+	// 		providerRegistry, err := provider_util.InitProviders(vpcBlockConfig, logger)
+	// 	} else if conf.VPC.VPCProviderType == "vpc-file" {
+	// 		providerRegistry, err := provider_file_util.InitProviders(vpcFileConfig, logger)
+	// 	}
+
+	// }
+
+	providerRegistry, err := provider_file_util.InitProviders(vpcFileConfig, logger)
+
 	if err != nil {
 		logger.Fatal("Error configuring providers", local.ZapError(err))
 	}
@@ -111,8 +130,10 @@ func main() {
 	} else if conf.Softlayer.SoftlayerFileEnabled {
 		providerName = conf.Softlayer.SoftlayerFileProviderName
 	} else if conf.VPC.Enabled {
-		providerName = conf.VPC.VPCBlockProviderName
+		providerName = conf.VPC.VPCProviderType
 	}
+
+	logger.Info("Provider Name is ================", zap.Reflect("providerName", providerName))
 
 	valid := true
 	for valid {
@@ -136,7 +157,7 @@ func main() {
 		requestID := uid.NewV4().String()
 		ctxLogger = ctxLogger.With(zap.String("RequestID", requestID))
 		ctx := context.WithValue(context.TODO(), provider.RequestID, requestID)
-		sess, _, err := provider_util.OpenProviderSessionWithContext(ctx, vpcBlockConfig, providerRegistry, providerName, ctxLogger)
+		sess, _, err := provider_file_util.OpenProviderSessionWithContext(ctx, vpcFileConfig, providerRegistry, providerName, ctxLogger)
 		if err != nil {
 			ctxLogger.Error("Failed to get session", zap.Reflect("Error", err))
 			continue

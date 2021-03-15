@@ -6,6 +6,7 @@ import (
 
 	instances "github.com/IBM/ibmcloud-volume-vpc/common/vpcclient/instances"
 	riaas "github.com/IBM/ibmcloud-volume-vpc/common/vpcclient/riaas"
+	vpcfilevolume "github.com/IBM/ibmcloud-volume-vpc/common/vpcclient/vpcfilevolume"
 	vpcvolume "github.com/IBM/ibmcloud-volume-vpc/common/vpcclient/vpcvolume"
 )
 
@@ -61,6 +62,18 @@ type RegionalAPI struct {
 	volumeServiceReturnsOnCall map[int]struct {
 		result1 vpcvolume.VolumeManager
 	}
+
+	VolumeFileServiceStub        func() vpcfilevolume.VolumeFileManager
+	volumeFileServiceMutex       sync.RWMutex
+	volumeFileServiceArgsForCall []struct {
+	}
+	volumeFileServiceReturns struct {
+		result1 vpcfilevolume.VolumeFileManager
+	}
+	volumeFileServiceReturnsOnCall map[int]struct {
+		result1 vpcfilevolume.VolumeFileManager
+	}
+
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
@@ -281,6 +294,58 @@ func (fake *RegionalAPI) VolumeAttachServiceReturnsOnCall(i int, result1 instanc
 	}{result1}
 }
 
+func (fake *RegionalAPI) VolumeFileService() vpcfilevolume.VolumeFileManager {
+	fake.volumeFileServiceMutex.Lock()
+	ret, specificReturn := fake.volumeFileServiceReturnsOnCall[len(fake.volumeFileServiceArgsForCall)]
+	fake.volumeFileServiceArgsForCall = append(fake.volumeFileServiceArgsForCall, struct {
+	}{})
+	fake.recordInvocation("VolumeFileService", []interface{}{})
+	fake.volumeFileServiceMutex.Unlock()
+	if fake.VolumeFileServiceStub != nil {
+		return fake.VolumeFileServiceStub()
+	}
+	if specificReturn {
+		return ret.result1
+	}
+	fakeReturns := fake.volumeFileServiceReturns
+	return fakeReturns.result1
+}
+
+func (fake *RegionalAPI) VolumeFileServiceCallCount() int {
+	fake.volumeFileServiceMutex.RLock()
+	defer fake.volumeFileServiceMutex.RUnlock()
+	return len(fake.volumeFileServiceArgsForCall)
+}
+
+func (fake *RegionalAPI) VolumeFileServiceCalls(stub func() vpcfilevolume.VolumeFileManager) {
+	fake.volumeFileServiceMutex.Lock()
+	defer fake.volumeFileServiceMutex.Unlock()
+	fake.VolumeFileServiceStub = stub
+}
+
+func (fake *RegionalAPI) VolumeFileServiceReturns(result1 vpcfilevolume.VolumeFileManager) {
+	fake.volumeFileServiceMutex.Lock()
+	defer fake.volumeFileServiceMutex.Unlock()
+	fake.VolumeFileServiceStub = nil
+	fake.volumeFileServiceReturns = struct {
+		result1 vpcfilevolume.VolumeFileManager
+	}{result1}
+}
+
+func (fake *RegionalAPI) VolumeFileServiceReturnsOnCall(i int, result1 vpcfilevolume.VolumeFileManager) {
+	fake.volumeFileServiceMutex.Lock()
+	defer fake.volumeFileServiceMutex.Unlock()
+	fake.VolumeServiceStub = nil
+	if fake.volumeFileServiceReturnsOnCall == nil {
+		fake.volumeFileServiceReturnsOnCall = make(map[int]struct {
+			result1 vpcfilevolume.VolumeFileManager
+		})
+	}
+	fake.volumeFileServiceReturnsOnCall[i] = struct {
+		result1 vpcfilevolume.VolumeFileManager
+	}{result1}
+}
+
 func (fake *RegionalAPI) VolumeService() vpcvolume.VolumeManager {
 	fake.volumeServiceMutex.Lock()
 	ret, specificReturn := fake.volumeServiceReturnsOnCall[len(fake.volumeServiceArgsForCall)]
@@ -346,6 +411,8 @@ func (fake *RegionalAPI) Invocations() map[string][][]interface{} {
 	defer fake.volumeAttachServiceMutex.RUnlock()
 	fake.volumeServiceMutex.RLock()
 	defer fake.volumeServiceMutex.RUnlock()
+	fake.volumeFileServiceMutex.RLock()
+	defer fake.volumeFileServiceMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
 	for key, value := range fake.invocations {
 		copiedInvocations[key] = value
