@@ -7,7 +7,7 @@
   g2_riaas_endpoint_url = "https://us-south.iaas.cloud.ibm.com"
   g2_riaas_endpoint_private_url = "https://us-south.iaas.cloud.ibm.com"
   g2_resource_group_id = "832b3da0130e4a78a2d5a6c62e79a745"
-  g2_api_key = "RH5tcjfMWQRbtYM_7UIAdG_Kuz0eJhixwbJ1PfH9Ixzf"
+  g2_api_key = ""
   provider_type = "g2"
   vpc_provider_type = "vpc-file"
   encryption = false
@@ -24,4 +24,4 @@
   iks_block_provider_name = "iks-vpc-classic"
 
 [API]
-  PassthroughSecret = "58a100b5-46b0-41db-9a61-a415747d7993"
+  PassthroughSecret = ""
