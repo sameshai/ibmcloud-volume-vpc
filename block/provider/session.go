@@ -42,7 +42,7 @@ type VPCSession struct {
 
 const (
 	// VPC storage provider
-	VPC = provider.VolumeProvider("VPC")
+	VPC = provider.VolumeProvider("VPC-FILE")
 	// VolumeType ...
 	VolumeType = provider.VolumeType("vpc-block")
 	// SnapshotMask ...

@@ -45,7 +45,7 @@ func InitProviders(conf *vpcconfig.VPCBlockConfig, logger *zap.Logger) (registry
 			logger.Info("VPC block provider error!")
 			return nil, err
 		}
-		providerRegistry.Register(conf.VPCConfig.VPCBlockProviderType, prov)
+		providerRegistry.Register(conf.VPCConfig.VPCProviderType, prov)
 		haveProviders = true
 	}
 
@@ -107,7 +107,7 @@ func GenerateContextCredentials(conf *vpcconfig.VPCBlockConfig, providerID strin
 
 	// Select appropriate authentication strategy
 	switch {
-	case (conf.VPCConfig != nil && providerID == conf.VPCConfig.VPCBlockProviderType):
+	case (conf.VPCConfig != nil && providerID == conf.VPCConfig.VPCProviderType):
 		ctxLogger.Info("Calling provider/init_provider.go ForIAMAccessToken")
 		return contextCredentialsFactory.ForIAMAccessToken(conf.VPCConfig.APIKey, ctxLogger)
 
