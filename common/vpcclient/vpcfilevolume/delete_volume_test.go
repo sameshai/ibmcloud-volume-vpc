@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// Package vpcvolume_test ...
+// Package vpcvfileolume_test ...
 package vpcfilevolume_test
 
 import (
