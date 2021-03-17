@@ -123,21 +123,6 @@ func SkipRetryForIKS(err error) bool {
 	return false
 }
 
-// skipRetryForObviousErrors skip retry as per listed error codes
-func skipRetryForObviousErrors(err error, isIKS bool) bool {
-	// Only for storage-api ms related calls error
-	if isIKS {
-		return SkipRetryForIKS(err)
-	}
-
-	// Only for RIaaS attachment related calls error
-	riaasError, ok := err.(*models.Error)
-	if ok {
-		return skipRetry(riaasError)
-	}
-	return false
-}
-
 // FlexyRetry ...
 type FlexyRetry struct {
 	maxRetryAttempt int

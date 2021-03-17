@@ -40,7 +40,7 @@ func (vpcs *VPCSession) GetVolume(id string) (respVolume *provider.Volume, err e
 
 	var volume *models.Volume
 	err = retry(vpcs.Logger, func() error {
-		volume, err = vpcs.Apiclient.VolumeService().GetVolume(id, vpcs.Logger)
+		volume, err = vpcs.Apiclient.VolumeFileService().GetVolume(id, vpcs.Logger)
 		return err
 	})
 
@@ -70,7 +70,7 @@ func (vpcs *VPCSession) GetVolumeByName(name string) (respVolume *provider.Volum
 
 	var volume *models.Volume
 	err = retry(vpcs.Logger, func() error {
-		volume, err = vpcs.Apiclient.VolumeService().GetVolumeByName(name, vpcs.Logger)
+		volume, err = vpcs.Apiclient.VolumeFileService().GetVolumeByName(name, vpcs.Logger)
 		return err
 	})
 

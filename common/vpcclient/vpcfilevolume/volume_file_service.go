@@ -29,13 +29,16 @@ type VolumeFileManager interface {
 	CreateVolume(volumeTemplate *models.Volume, ctxLogger *zap.Logger) (*models.Volume, error)
 
 	// Get volume lists by using snapshot tags
-	ListVolumes(limit int, start string, filters *models.ListVolumeFilters, ctxLogger *zap.Logger) (*models.VolumeList, error)
+	ListVolumes(limit int, start string, filters *models.ListVolumeFilters, ctxLogger *zap.Logger) (*models.VolumeFileList, error)
 
 	// Get the volume by using ID
 	GetVolume(volumeID string, ctxLogger *zap.Logger) (*models.Volume, error)
 
 	// Get the volume by using volume name
 	GetVolumeByName(volumeName string, ctxLogger *zap.Logger) (*models.Volume, error)
+
+	// Delete the volume
+	DeleteVolume(volumeID string, ctxLogger *zap.Logger) error
 }
 
 // VolumeFileService ...

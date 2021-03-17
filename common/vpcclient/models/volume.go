@@ -72,6 +72,15 @@ type VolumeList struct {
 	TotalCount int         `json:"total_count,omitempty"`
 }
 
+// VolumeFileList ...
+type VolumeFileList struct {
+	First      *HReference `json:"first,omitempty"`
+	Next       *HReference `json:"next,omitempty"`
+	Volumes    []*Volume   `json:"shares"`
+	Limit      int         `json:"limit,omitempty"`
+	TotalCount int         `json:"total_count,omitempty"`
+}
+
 // HReference ...
 type HReference struct {
 	Href string `json:"href,omitempty"`

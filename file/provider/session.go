@@ -22,11 +22,13 @@ import (
 	"github.com/IBM/ibmcloud-volume-vpc/common/vpcclient/instances"
 	"github.com/IBM/ibmcloud-volume-vpc/common/vpcclient/riaas"
 	vpcconfig "github.com/IBM/ibmcloud-volume-vpc/file/vpcconfig"
+
 	"go.uber.org/zap"
 )
 
 // VPCSession implements lib.Session
 type VPCSession struct {
+	*provider.DefaultSession
 	VPCAccountID          string
 	Config                *vpcconfig.VPCFileConfig
 	ContextCredentials    provider.ContextCredentials
@@ -40,6 +42,7 @@ type VPCSession struct {
 }
 
 const (
+
 	// VPC storage provider
 	VPC = provider.VolumeProvider("VPC-FILE")
 	// VolumeType ...

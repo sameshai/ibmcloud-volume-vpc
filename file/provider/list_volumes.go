@@ -50,7 +50,6 @@ func (vpcs *VPCSession) ListVolumes(limit int, start string, tags map[string]str
 	}
 
 	filters := &models.ListVolumeFilters{
-		// Tag:          tags["tag"],
 		ResourceGroupID: tags["resource_group.id"],
 		ZoneName:        tags["zone.name"],
 		VolumeName:      tags["name"],
@@ -58,10 +57,10 @@ func (vpcs *VPCSession) ListVolumes(limit int, start string, tags map[string]str
 
 	vpcs.Logger.Info("Getting volumes list from VPC provider...", zap.Reflect("start", start), zap.Reflect("filters", filters))
 
-	var volumes *models.VolumeList
+	var volumes *models.VolumeFileList
 	var err error
 	err = retry(vpcs.Logger, func() error {
-		volumes, err = vpcs.Apiclient.VolumeService().ListVolumes(limit, start, filters, vpcs.Logger)
+		volumes, err = vpcs.Apiclient.VolumeFileService().ListVolumes(limit, start, filters, vpcs.Logger)
 		return err
 	})
 

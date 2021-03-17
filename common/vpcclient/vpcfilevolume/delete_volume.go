@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-// Package vpcfilevolume ...
+// Package vpcvolume ...
 package vpcfilevolume
 
 import (
-	"strconv"
 	"time"
 
 	util "github.com/IBM/ibmcloud-volume-interface/lib/utils"
@@ -27,51 +26,28 @@ import (
 	"go.uber.org/zap"
 )
 
-// ListVolumes GETs /volumes
-func (vs *VolumeFileService) ListVolumes(limit int, start string, filters *models.ListVolumeFilters, ctxLogger *zap.Logger) (*models.VolumeFileList, error) {
-	ctxLogger.Debug("Entry Backend ListVolumes")
-	defer ctxLogger.Debug("Exit Backend ListVolumes")
+// DeleteVolume POSTs to /volumes
+func (vs *VolumeFileService) DeleteVolume(volumeID string, ctxLogger *zap.Logger) error {
+	ctxLogger.Debug("Entry Backend DeleteVolume")
+	defer ctxLogger.Debug("Exit Backend DeleteVolume")
 
-	defer util.TimeTracker("ListVolumes", time.Now())
+	defer util.TimeTracker("DeleteVolume", time.Now())
 
 	operation := &client.Operation{
-		Name:        "ListVolumes",
-		Method:      "GET",
-		PathPattern: volumesPath,
+		Name:        "DeleteVolume",
+		Method:      "DELETE",
+		PathPattern: volumeIDPath,
 	}
 
-	var volumes models.VolumeFileList
 	var apiErr models.Error
 
 	request := vs.client.NewRequest(operation)
 	ctxLogger.Info("Equivalent curl command", zap.Reflect("URL", request.URL()), zap.Reflect("Operation", operation))
 
-	req := request.JSONSuccess(&volumes).JSONError(&apiErr)
-
-	if limit > 0 {
-		req.AddQueryValue("limit", strconv.Itoa(limit))
-	}
-
-	if start != "" {
-		req.AddQueryValue("start", start)
-	}
-
-	if filters != nil {
-		if filters.ResourceGroupID != "" {
-			req.AddQueryValue("resource_group.id", filters.ResourceGroupID)
-		}
-		if filters.ZoneName != "" {
-			req.AddQueryValue("zone.name", filters.ZoneName)
-		}
-		if filters.VolumeName != "" {
-			req.AddQueryValue("name", filters.VolumeName)
-		}
-	}
-
-	_, err := req.Invoke()
+	_, err := request.PathParameter(volumeIDParam, volumeID).JSONError(&apiErr).Invoke()
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return &volumes, nil
+	return nil
 }

@@ -41,7 +41,7 @@ func (vpcs *VPCSession) DeleteVolume(volume *provider.Volume) (err error) {
 
 	vpcs.Logger.Info("Deleting volume from VPC provider...")
 	err = retry(vpcs.Logger, func() error {
-		err = vpcs.Apiclient.VolumeService().DeleteVolume(volume.VolumeID, vpcs.Logger)
+		err = vpcs.Apiclient.VolumeFileService().DeleteVolume(volume.VolumeID, vpcs.Logger)
 		return err
 	})
 	if err != nil {
@@ -80,7 +80,7 @@ func WaitForVolumeDeletion(vpcs *VPCSession, volumeID string) (err error) {
 	vpcs.Logger.Info("Getting volume details from VPC provider...", zap.Reflect("VolumeID", volumeID))
 
 	err = vpcs.APIRetry.FlexyRetry(vpcs.Logger, func() (error, bool) {
-		_, err = vpcs.Apiclient.VolumeService().GetVolume(volumeID, vpcs.Logger)
+		_, err = vpcs.Apiclient.VolumeFileService().GetVolume(volumeID, vpcs.Logger)
 		// Keep retry, until GetVolume returns volume not found
 		if err != nil {
 			skip = skipRetry(err.(*models.Error))

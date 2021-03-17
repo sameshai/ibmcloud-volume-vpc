@@ -226,7 +226,10 @@ func (vpcp *VPCFileProvider) OpenSession(ctx context.Context, contextCredentials
 		maxRetryGap = vpcp.Config.VPCConfig.MaxRetryGap
 	}
 
+	sess := provider.NewDefaultSession()
+
 	vpcSession := &VPCSession{
+		DefaultSession:        sess.(*provider.DefaultSession),
 		VPCAccountID:          contextCredentials.IAMAccountID,
 		Config:                vpcp.Config,
 		ContextCredentials:    contextCredentials,
