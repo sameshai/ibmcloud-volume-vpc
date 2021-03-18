@@ -142,6 +142,13 @@ var messagesEn = map[string]util.Message{
 		RC:          400,
 		Action:      "Verify the specified volume capacity. The volume capacity must be a positive number between 10 GB and 2000 GB. ",
 	},
+	"VolumeFileCapacityInvalid": {
+		Code:        "VolumeFileCapacityInvalid",
+		Description: "The specified volume capacity '%d' is not valid. ",
+		Type:        util.InvalidRequest,
+		RC:          400,
+		Action:      "Verify the specified volume capacity. The volume capacity must be a positive number between 10 GB and 16000 GB. ",
+	},
 	"IopsInvalid": {
 		Code:        "IopsInvalid",
 		Description: "The specified volume IOPS '%s' is not valid for the selected volume profile. ",

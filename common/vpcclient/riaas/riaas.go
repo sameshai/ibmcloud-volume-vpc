@@ -25,6 +25,7 @@ import (
 	"github.com/IBM/ibmcloud-volume-vpc/common/vpcclient/client"
 	"github.com/IBM/ibmcloud-volume-vpc/common/vpcclient/instances"
 	"github.com/IBM/ibmcloud-volume-vpc/common/vpcclient/models"
+	"github.com/IBM/ibmcloud-volume-vpc/common/vpcclient/vpcfilevolume"
 	"github.com/IBM/ibmcloud-volume-vpc/common/vpcclient/vpcvolume"
 )
 
@@ -34,6 +35,7 @@ import (
 type RegionalAPI interface {
 	Login(token string) error
 
+	VolumeFileService() vpcfilevolume.VolumeFileManager
 	VolumeService() vpcvolume.VolumeManager
 	VolumeAttachService() instances.VolumeAttachManager
 	IKSVolumeAttachService() instances.VolumeAttachManager
@@ -90,6 +92,11 @@ func New(config Config) (*Session, error) {
 func (s *Session) Login(token string) error {
 	s.client.WithAuthToken(token)
 	return nil
+}
+
+// VolumeFileService returns the Volume service for managing file volumes
+func (s *Session) VolumeFileService() vpcfilevolume.VolumeFileManager {
+	return vpcfilevolume.New(s.client)
 }
 
 // VolumeService returns the Volume service for managing volumes

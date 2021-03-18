@@ -26,38 +26,25 @@ import (
 	"github.com/IBM/ibmcloud-volume-interface/lib/provider"
 	util "github.com/IBM/ibmcloud-volume-interface/lib/utils"
 	"github.com/IBM/ibmcloud-volume-interface/provider/local"
-	vpc_provider "github.com/IBM/ibmcloud-volume-vpc/block/provider"
-	vpcconfig "github.com/IBM/ibmcloud-volume-vpc/block/vpcconfig"
 	"github.com/IBM/ibmcloud-volume-vpc/common/registry"
-	iks_vpc_provider "github.com/IBM/ibmcloud-volume-vpc/iks/provider"
+	vpc_provider "github.com/IBM/ibmcloud-volume-vpc/file/provider"
+	vpcfileconfig "github.com/IBM/ibmcloud-volume-vpc/file/vpcconfig"
 )
 
 // InitProviders initialization for all providers as per configurations
-func InitProviders(conf *vpcconfig.VPCBlockConfig, logger *zap.Logger) (registry.Providers, error) {
+func InitProviders(conf *vpcfileconfig.VPCFileConfig, logger *zap.Logger) (registry.Providers, error) {
 	var haveProviders bool
 	providerRegistry := &registry.ProviderRegistry{}
 
 	// VPC provider registration
 	if conf.VPCConfig != nil && conf.VPCConfig.Enabled {
-		logger.Info("Configuring VPC Block Provider")
+		logger.Info("Configuring VPC File Provider")
 		prov, err := vpc_provider.NewProvider(conf, logger)
 		if err != nil {
-			logger.Info("VPC block provider error!")
+			logger.Info("VPC file provider error!")
 			return nil, err
 		}
 		providerRegistry.Register(conf.VPCConfig.VPCProviderType, prov)
-		haveProviders = true
-	}
-
-	// IKS provider registration
-	if conf.IKSConfig != nil && conf.IKSConfig.Enabled {
-		logger.Info("Configuring IKS-VPC Block Provider")
-		prov, err := iks_vpc_provider.NewProvider(conf, logger)
-		if err != nil {
-			logger.Info("VPC block provider error!")
-			return nil, err
-		}
-		providerRegistry.Register(conf.IKSConfig.IKSBlockProviderName, prov)
 		haveProviders = true
 	}
 
@@ -70,12 +57,12 @@ func InitProviders(conf *vpcconfig.VPCBlockConfig, logger *zap.Logger) (registry
 }
 
 // OpenProviderSession ...
-func OpenProviderSession(conf *vpcconfig.VPCBlockConfig, providers registry.Providers, providerID string, ctxLogger *zap.Logger) (session provider.Session, fatal bool, err error) {
+func OpenProviderSession(conf *vpcfileconfig.VPCFileConfig, providers registry.Providers, providerID string, ctxLogger *zap.Logger) (session provider.Session, fatal bool, err error) {
 	return OpenProviderSessionWithContext(context.TODO(), conf, providers, providerID, ctxLogger)
 }
 
 // OpenProviderSessionWithContext ...
-func OpenProviderSessionWithContext(ctx context.Context, conf *vpcconfig.VPCBlockConfig, providers registry.Providers, providerID string, ctxLogger *zap.Logger) (session provider.Session, fatal bool, err error) {
+func OpenProviderSessionWithContext(ctx context.Context, conf *vpcfileconfig.VPCFileConfig, providers registry.Providers, providerID string, ctxLogger *zap.Logger) (session provider.Session, fatal bool, err error) {
 	prov, err := providers.Get(providerID)
 	if err != nil {
 		ctxLogger.Error("Not able to get the said provider, might be its not registered", local.ZapError(err))
@@ -102,7 +89,7 @@ func OpenProviderSessionWithContext(ctx context.Context, conf *vpcconfig.VPCBloc
 }
 
 // GenerateContextCredentials ...
-func GenerateContextCredentials(conf *vpcconfig.VPCBlockConfig, providerID string, contextCredentialsFactory local.ContextCredentialsFactory, ctxLogger *zap.Logger) (provider.ContextCredentials, error) {
+func GenerateContextCredentials(conf *vpcfileconfig.VPCFileConfig, providerID string, contextCredentialsFactory local.ContextCredentialsFactory, ctxLogger *zap.Logger) (provider.ContextCredentials, error) {
 	ctxLogger.Info("Generating generateContextCredentials for ", zap.String("Provider ID", providerID))
 
 	// Select appropriate authentication strategy
