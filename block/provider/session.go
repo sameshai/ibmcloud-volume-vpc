@@ -27,7 +27,7 @@ import (
 
 // VPCSession implements lib.Session
 type VPCSession struct {
-	*provider.DefaultSession
+	provider.DefaultVolumeProvider
 	VPCAccountID          string
 	Config                *vpcconfig.VPCBlockConfig
 	ContextCredentials    provider.ContextCredentials
@@ -44,7 +44,7 @@ const (
 	// VPC storage provider
 	VPC = provider.VolumeProvider("VPC-FILE")
 	// VolumeType ...
-	VolumeType = provider.VolumeType("vpc-block")
+	VolumeType = provider.VolumeType("vpc-file")
 	// SnapshotMask ...
 	SnapshotMask = "id,username,capacityGb,createDate,snapshotCapacityGb,parentVolume[snapshotSizeBytes],parentVolume[snapshotCapacityGb],parentVolume[id],parentVolume[storageTierLevel],parentVolume[notes],storageType[keyName],serviceResource[datacenter[name]],billingItem[location,hourlyFlag],provisionedIops,lunId,originalVolumeName,storageTierLevel,notes"
 )

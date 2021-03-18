@@ -28,7 +28,7 @@ import (
 
 // VPCSession implements lib.Session
 type VPCSession struct {
-	*provider.DefaultSession
+	provider.DefaultVolumeProvider
 	VPCAccountID          string
 	Config                *vpcconfig.VPCFileConfig
 	ContextCredentials    provider.ContextCredentials
