@@ -37,6 +37,7 @@ type Volume struct {
 	ID                  string               `json:"id,omitempty"`
 	Name                string               `json:"name,omitempty"`
 	Capacity            int64                `json:"capacity,omitempty"`
+	Size                int64                `json:"size,omitempty"`
 	Iops                int64                `json:"iops,omitempty"`
 	VolumeEncryptionKey *VolumeEncryptionKey `json:"encryption_key,omitempty"`
 	ResourceGroup       *ResourceGroup       `json:"resource_group,omitempty"`
@@ -67,6 +68,15 @@ type VolumeList struct {
 	First      *HReference `json:"first,omitempty"`
 	Next       *HReference `json:"next,omitempty"`
 	Volumes    []*Volume   `json:"volumes"`
+	Limit      int         `json:"limit,omitempty"`
+	TotalCount int         `json:"total_count,omitempty"`
+}
+
+// VolumeFileList ...
+type VolumeFileList struct {
+	First      *HReference `json:"first,omitempty"`
+	Next       *HReference `json:"next,omitempty"`
+	Volumes    []*Volume   `json:"shares"`
 	Limit      int         `json:"limit,omitempty"`
 	TotalCount int         `json:"total_count,omitempty"`
 }

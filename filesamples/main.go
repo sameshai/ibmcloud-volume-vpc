@@ -31,8 +31,8 @@ import (
 	"github.com/IBM/ibmcloud-volume-interface/lib/provider"
 	userError "github.com/IBM/ibmcloud-volume-interface/lib/utils"
 	"github.com/IBM/ibmcloud-volume-interface/provider/local"
-	provider_util "github.com/IBM/ibmcloud-volume-vpc/block/utils"
-	vpcconfig "github.com/IBM/ibmcloud-volume-vpc/block/vpcconfig"
+	provider_file_util "github.com/IBM/ibmcloud-volume-vpc/file/utils"
+	vpcfileconfig "github.com/IBM/ibmcloud-volume-vpc/file/vpcconfig"
 	uid "github.com/satori/go.uuid"
 )
 
@@ -80,7 +80,7 @@ func main() {
 
 	// Load config file
 	goPath := os.Getenv("GOPATH")
-	conf, err := config.ReadConfig(goPath+"/src/github.com/IBM/ibmcloud-volume-vpc/etc/libconfig.toml", logger)
+	conf, err := config.ReadConfig(goPath+"/src/github.com/IBM/ibmcloud-volume-vpc/etc/libconfigfile.toml", logger)
 	if err != nil {
 		logger.Fatal("Error loading configuration")
 	}
@@ -92,15 +92,14 @@ func main() {
 		traceLevel.SetLevel(zap.DebugLevel)
 	}
 
-	vpcBlockConfig := &vpcconfig.VPCBlockConfig{
+	vpcFileConfig := &vpcfileconfig.VPCFileConfig{
 		VPCConfig:    conf.VPC,
 		IKSConfig:    conf.IKS,
 		APIConfig:    conf.API,
 		ServerConfig: conf.Server,
 	}
 
-	//Prepare provider registry
-	providerRegistry, err := provider_util.InitProviders(vpcBlockConfig, logger)
+	providerRegistry, err := provider_file_util.InitProviders(vpcFileConfig, logger)
 
 	if err != nil {
 		logger.Fatal("Error configuring providers", local.ZapError(err))
@@ -140,13 +139,14 @@ func main() {
 		requestID := uid.NewV4().String()
 		ctxLogger = ctxLogger.With(zap.String("RequestID", requestID))
 		ctx := context.WithValue(context.TODO(), provider.RequestID, requestID)
-		sess, _, err := provider_util.OpenProviderSessionWithContext(ctx, vpcBlockConfig, providerRegistry, providerName, ctxLogger)
+		sess, _, err := provider_file_util.OpenProviderSessionWithContext(ctx, vpcFileConfig, providerRegistry, providerName, ctxLogger)
 		if err != nil {
 			ctxLogger.Error("Failed to get session", zap.Reflect("Error", err))
 			continue
 		}
-		volumeAttachmentManager := NewVolumeAttachmentManager(sess, ctxLogger, requestID)
-		volumeManager := NewVolumeManager(sess, ctxLogger, requestID)
+
+		//volumeAttachmentManager := NewVolumeAttachmentManager(sess, ctxLogger, requestID)
+		//volumeManager := NewVolumeManager(sess, ctxLogger, requestID)
 
 		defer sess.Close()
 		defer ctxLogger.Sync()
@@ -447,9 +447,9 @@ func main() {
 			}
 			fmt.Printf("\n\n")
 		} else if choiceN == 15 {
-			volumeAttachmentManager.AttachVolume()
+			//volumeAttachmentManager.AttachVolume()
 		} else if choiceN == 16 {
-			volumeAttachmentManager.DetachVolume()
+			//volumeAttachmentManager.DetachVolume()
 		} else if choiceN == 17 {
 			fmt.Println("You selected get VPC volume by name")
 			volumeName := ""
@@ -507,9 +507,9 @@ func main() {
 			}
 			fmt.Printf("\n\n")
 		} else if choiceN == 19 {
-			volumeAttachmentManager.VolumeAttachment()
+			//volumeAttachmentManager.VolumeAttachment()
 		} else if choiceN == 20 {
-			volumeManager.UpdateVolume()
+			//volumeManager.UpdateVolume()
 			os.Exit(0)
 		} else {
 			fmt.Println("No right choice")
